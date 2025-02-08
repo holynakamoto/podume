@@ -3,7 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "jsx": "react-native", // Specify JSX code generation for React Native
+    "skipLibCheck": true // Skip type checking of declaration files
   },
   "include": [
     "**/*.ts",
@@ -11,4 +13,4 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ]
-} 
+}

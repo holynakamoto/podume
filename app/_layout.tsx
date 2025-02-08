@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from '../context/auth'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Slot, useRouter, useSegments } from 'expo-router'
 import { useEffect } from 'react'
+import { View, Text } from 'react-native'
 
 const queryClient = new QueryClient()
 
@@ -31,18 +32,13 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
-export default function RootLayout() {
+const Layout = ({ children }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <ThemeProvider>
-          <AuthProvider>
-            <AuthGuard>
-              <Slot />
-            </AuthGuard>
-          </AuthProvider>
-        </ThemeProvider>
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <View>
+      <Text>Layout Component</Text>
+      {children}
+    </View>
   )
 }
+
+export default Layout

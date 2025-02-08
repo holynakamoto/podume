@@ -1,7 +1,35 @@
-import { createContext, useContext } from 'react'
+import React, { createContext, useContext } from 'react'
 import { useColorScheme } from 'react-native'
 
-export const lightTheme = {
+// Define the theme structure
+type ThemeColors = {
+  primary: string
+  background: string
+  card: string
+  text: string
+  border: string
+  notification: string
+}
+
+type Theme = {
+  colors: ThemeColors
+  spacing: {
+    xs: number
+    sm: number
+    md: number
+    lg: number
+    xl: number
+  }
+  typography: {
+    h1: { fontSize: number; fontWeight: string }
+    h2: { fontSize: number; fontWeight: string }
+    body: { fontSize: number }
+    caption: { fontSize: number }
+  }
+}
+
+// Define light theme
+export const lightTheme: Theme = {
   colors: {
     primary: '#007AFF',
     background: '#FFFFFF',
@@ -22,10 +50,11 @@ export const lightTheme = {
     h2: { fontSize: 24, fontWeight: 'bold' },
     body: { fontSize: 16 },
     caption: { fontSize: 14 },
-  }
+  },
 } as const
 
-export const darkTheme = {
+// Define dark theme
+export const darkTheme: Theme = {
   ...lightTheme,
   colors: {
     primary: '#0A84FF',
@@ -37,23 +66,10 @@ export const darkTheme = {
   },
 } as const
 
-type ThemeColors = {
-  primary: string
-  background: string
-  card: string
-  text: string
-  border: string
-  notification: string
-}
+// Create the ThemeContext
+const ThemeContext = createContext<Theme>(lightTheme)
 
-type Theme = {
-  colors: ThemeColors
-  spacing: typeof lightTheme.spacing
-  typography: typeof lightTheme.typography
-}
-
-const ThemeContext = createContext<Theme | undefined>(undefined)
-
+// ThemeProvider component
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const colorScheme = useColorScheme()
   const theme = colorScheme === 'dark' ? darkTheme : lightTheme
@@ -61,10 +77,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
 }
 
+// Custom hook to use the theme
 export function useTheme() {
   const context = useContext(ThemeContext)
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider')
   }
   return context
-} 
+}
